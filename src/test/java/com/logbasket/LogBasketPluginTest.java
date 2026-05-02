@@ -1,13 +1,13 @@
-package com.example;
+package com.logbasket;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
-public class ExamplePluginTest
+public class LogBasketPluginTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(ExamplePlugin.class);
+		ExternalPluginManager.loadBuiltin(LogBasketPlugin.class);
 		RuneLite.main(args);
 	}
 }
