@@ -258,16 +258,9 @@ public class LogBasketPlugin extends Plugin
 			}
 			else if (removedItems.size() > 0 && consumeRecentAction(LogBasketAction.FILL))
 			{
-				boolean logsRemainInInventory = inventoryItems.stream().anyMatch(LOG_IDS::contains);
-
-				if (logsRemainInInventory)
+				int addedLogs = (int) removedItems.stream().filter(LOG_IDS::contains).count();
+				if (addedLogs > 0)
 				{
-					LogBasket.STATE.setStoredLogs(LogBasket.FULL);
-					LogBasket.STATE.setUnknown(false);
-				}
-				else
-				{
-					int addedLogs = removedItems.size();
 					int newCount = Math.min(LogBasket.FULL, LogBasket.STATE.getStoredLogs() + addedLogs);
 					LogBasket.STATE.setStoredLogs(newCount);
 					LogBasket.STATE.setUnknown(false);
