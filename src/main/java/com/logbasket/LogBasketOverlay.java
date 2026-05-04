@@ -33,16 +33,15 @@ public class LogBasketOverlay extends WidgetItemOverlay
 		}
 
 		final Rectangle bounds = widgetItem.getCanvasBounds();
-
-		final Color green = new Color(0x00FF9A);
+		final Color colour = config.overlayColour();
 
 		if (LogBasket.STATE.isUnknown())
 		{
-			drawCount(graphics, "?", bounds, green);
+			drawCount(graphics, "?", bounds, colour);
 			return;
 		}
 
-		drawCount(graphics, String.valueOf(LogBasket.STATE.getStoredLogs()), bounds, green);
+		drawCount(graphics, String.valueOf(LogBasket.STATE.getStoredLogs()), bounds, colour);
 	}
 
 	private void drawCount(Graphics2D graphics, String text, Rectangle bounds, Color colour)

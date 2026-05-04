@@ -43,7 +43,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Log Basket",
-	description = "Displays the amount of logs contained within your log basket",
+	description = "Displays amount of logs contained within the log basket",
 	tags = {"woodcutting", "log", "basket", "forestry"}
 )
 public class LogBasketPlugin extends Plugin
