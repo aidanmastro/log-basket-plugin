@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,12 +33,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Log Basket",
@@ -96,10 +92,7 @@ public class LogBasketPlugin extends Plugin
 
 	@Inject private Client client;
 	@Inject private ClientThread clientThread;
-	@Inject private InfoBoxManager infoBoxManager;
 	@Inject private OverlayManager overlayManager;
-	@Inject private ItemManager itemManager;
-	@Inject private LogBasketConfig config;
 	@Inject private LogBasketOverlay logBasketOverlay;
 
 	private final Multiset<Integer> inventoryItems = HashMultiset.create();
@@ -108,7 +101,6 @@ public class LogBasketPlugin extends Plugin
 	private final AtomicInteger newLogsInInventory = new AtomicInteger();
 	private final AtomicInteger burnedLogsFromInfernalAxe = new AtomicInteger();
 
-	private LogBasketInfoBox infoBox;
 	private boolean pendingPartialEmpty = false;
 
 	@Provides
@@ -131,7 +123,6 @@ public class LogBasketPlugin extends Plugin
 			{
 				refreshContainerSnapshots();
 			}
-			updateInfoBox();
 		});
 	}
 
@@ -139,19 +130,9 @@ public class LogBasketPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(logBasketOverlay);
-		removeInfoBox();
 		inventoryItems.clear();
 		equipmentItems.clear();
 		basketActions.clear();
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("logbasket"))
-		{
-			updateInfoBox();
-		}
 	}
 
 	@Subscribe
@@ -159,11 +140,7 @@ public class LogBasketPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() ->
-			{
-				refreshContainerSnapshots();
-				updateInfoBox();
-			});
+			clientThread.invokeLater(this::refreshContainerSnapshots);
 		}
 	}
 
@@ -238,7 +215,6 @@ public class LogBasketPlugin extends Plugin
 			if (!hasAnyOfItem(LogBasket.BASKET_IDS))
 			{
 				updateInventory(event.getItemContainer(), inventoryItems);
-				updateInfoBox();
 				return;
 			}
 
@@ -266,13 +242,10 @@ public class LogBasketPlugin extends Plugin
 					LogBasket.STATE.setUnknown(false);
 				}
 			}
-
-			updateInfoBox();
 		}
 		else if (containerId == InventoryID.EQUIPMENT.getId())
 		{
 			updateInventory(event.getItemContainer(), equipmentItems);
-			updateInfoBox();
 		}
 	}
 
@@ -450,33 +423,5 @@ public class LogBasketPlugin extends Plugin
 			return true;
 		}
 		return false;
-	}
-
-	public void updateInfoBox()
-	{
-		removeInfoBox();
-
-		if (!config.showInfoBox())
-		{
-			return;
-		}
-
-		if (!hasAnyOfItem(LogBasket.BASKET_IDS))
-		{
-			return;
-		}
-
-		final BufferedImage image = itemManager.getImage(ItemID.LOG_BASKET_CLOSED);
-		infoBox = new LogBasketInfoBox(image, this);
-		infoBoxManager.addInfoBox(infoBox);
-	}
-
-	private void removeInfoBox()
-	{
-		if (infoBox != null)
-		{
-			infoBoxManager.removeInfoBox(infoBox);
-			infoBox = null;
-		}
 	}
 }

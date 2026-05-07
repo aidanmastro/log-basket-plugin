@@ -10,16 +10,6 @@ import net.runelite.client.config.ConfigItem;
 public interface LogBasketConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showInfoBox",
-		name = "Show InfoBox",
-		description = "Show a RuneLite InfoBox with the current log basket count"
-	)
-	default boolean showInfoBox()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "showItemOverlay",
 		name = "Show inventory overlay",
 		description = "Show total log count inside of the log basket as an inventory overlay"
