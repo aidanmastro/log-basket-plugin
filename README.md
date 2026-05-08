@@ -3,7 +3,7 @@
 A [RuneLite](https://runelite.net) plugin that tracks and displays the number of logs stored in your log basket (or forestry basket).
 
 <img src="screenshot-01.png" alt="Log basket inventory overlay" width="240" height="215">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshot-02.png" alt="Log basket equipment overlay" width="240" height="215">
 
 ## Features

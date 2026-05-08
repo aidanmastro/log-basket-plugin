@@ -275,13 +275,16 @@ public class LogBasketPlugin extends Plugin
 				return;
 		}
 
-		if (!LogBasket.BASKET_IDS.contains(itemId))
+		final LogBasketAction action = LogBasketAction.forMenuOption(event.getMenuOption());
+		if (action == null)
 		{
 			return;
 		}
 
-		final LogBasketAction action = LogBasketAction.forMenuOption(event.getMenuOption());
-		if (action != null)
+		boolean clickedOnBasket = LogBasket.BASKET_IDS.contains(itemId);
+		boolean basketEquipped = equipmentItems.stream().anyMatch(LogBasket.BASKET_IDS::contains);
+
+		if (clickedOnBasket || basketEquipped)
 		{
 			basketActions.put(action, client.getTickCount());
 		}
