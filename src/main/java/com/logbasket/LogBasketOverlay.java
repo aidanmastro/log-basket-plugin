@@ -17,6 +17,7 @@ public class LogBasketOverlay extends WidgetItemOverlay
 	{
 		this.config = config;
 		showOnInventory();
+		showOnEquipment();
 	}
 
 	@Override
