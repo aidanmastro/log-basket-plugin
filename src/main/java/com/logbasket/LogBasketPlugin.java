@@ -328,25 +328,21 @@ public class LogBasketPlugin extends Plugin
 			return;
 		}
 
-		final String[] lines = text.split("(?i)<br\\s*/?>|\\n");
+		final String plainText = text.replaceAll("<[^>]+>", " ").replaceAll("\\s+", " ");
+		final Matcher matcher = CHECK_ENTRY_PATTERN.matcher(plainText);
+
 		int total = 0;
 		boolean matched = false;
 
-		for (final String line : lines)
+		while (matcher.find())
 		{
-			final String plainLine = line.replaceAll("<[^>]+>", "").trim();
-			final Matcher matcher = CHECK_ENTRY_PATTERN.matcher(plainLine);
+			final int count = Integer.parseInt(matcher.group(1));
+			final String logName = matcher.group(2).trim().toLowerCase();
 
-			while (matcher.find())
+			if (LOG_NAME_TO_ID.containsKey(logName))
 			{
-				final int count = Integer.parseInt(matcher.group(1));
-				final String logName = matcher.group(2).trim().toLowerCase();
-
-				if (LOG_NAME_TO_ID.containsKey(logName))
-				{
-					total += count;
-					matched = true;
-				}
+				total += count;
+				matched = true;
 			}
 		}
 
