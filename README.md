@@ -19,4 +19,4 @@ A RuneLite [plugin](https://runelite.net/plugin-hub/show/log-basket) that tracks
 
 ## Installation
 
-Install [Log Basket](https://runelite.net/plugin-hub/show/log-basket) from the in-game RuneLite plugin hub.
+Install [Log Basket](https://runelite.net/plugin-hub/show/log-basket) from the _in-game_ RuneLite plugin hub.
