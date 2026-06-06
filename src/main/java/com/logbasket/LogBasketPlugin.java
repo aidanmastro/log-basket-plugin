@@ -52,6 +52,7 @@ public class LogBasketPlugin extends Plugin
 	private static final String EMPTY_BASKET_MESSAGE = "Your basket is empty.";
 	private static final String CHECKED_EMPTY_BASKET_MESSAGE = "The basket is empty.";
 	private static final String EMPTIED_TO_BANK_MESSAGE = "You empty your basket into the bank.";
+	private static final String EMPTIED_CONTAINERS_TO_BANK_MESSAGE = "You empty all of your containers into the bank.";
 	private static final String EMPTIED_ALL_TO_INVENTORY_MESSAGE = "You empty your basket.";
 	private static final String EMPTIED_PARTIAL_TO_INVENTORY_MESSAGE = "You empty as many logs as you can carry.";
 	private static final String LOG_CUT_KANDARIN_HEADGEAR_MESSAGE = "Your Kandarin headgear provides you with an additional log.";
@@ -168,6 +169,7 @@ public class LogBasketPlugin extends Plugin
 			switch (message)
 			{
 				case EMPTIED_TO_BANK_MESSAGE:
+				case EMPTIED_CONTAINERS_TO_BANK_MESSAGE:
 				case EMPTIED_ALL_TO_INVENTORY_MESSAGE:
 				case EMPTY_BASKET_MESSAGE:
 				case CHECKED_EMPTY_BASKET_MESSAGE:
