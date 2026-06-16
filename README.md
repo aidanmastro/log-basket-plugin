@@ -16,6 +16,7 @@ A RuneLite [plugin](https://runelite.net/plugin-hub/show/log-basket) that tracks
 ## Known limitations
 
 - Logs picked up directly off the ground while the basket is open auto-route into the basket, but this is _not_ yet tracked. Use `Check` to resync.
+- Depositing logs into the beehive during the Forestry beehive event does not update the count, as the game produces no chat message or inventory change to hook into. Use `Check` to resync after the event.
 
 ## Installation
 
