@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
@@ -28,6 +27,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -148,8 +148,8 @@ public class LogBasketPlugin extends Plugin
 
 	private void refreshContainerSnapshots()
 	{
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+		final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 		if (inventory != null)
 		{
 			updateInventory(inventory, inventoryItems);
@@ -214,7 +214,7 @@ public class LogBasketPlugin extends Plugin
 	{
 		final int containerId = event.getContainerId();
 
-		if (containerId == InventoryID.INVENTORY.getId())
+		if (containerId == InventoryID.INV)
 		{
 			if (!hasAnyOfItem(LogBasket.BASKET_IDS))
 			{
@@ -247,7 +247,7 @@ public class LogBasketPlugin extends Plugin
 				}
 			}
 		}
-		else if (containerId == InventoryID.EQUIPMENT.getId())
+		else if (containerId == InventoryID.WORN)
 		{
 			updateInventory(event.getItemContainer(), equipmentItems);
 		}
