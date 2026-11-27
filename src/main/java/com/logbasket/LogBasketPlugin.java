@@ -33,9 +33,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Log Basket",
@@ -94,8 +97,11 @@ public class LogBasketPlugin extends Plugin
 
 	@Inject private Client client;
 	@Inject private ClientThread clientThread;
+	@Inject private ItemManager itemManager;
 	@Inject private OverlayManager overlayManager;
+	@Inject	private InfoBoxManager infoBoxManager;
 	@Inject private LogBasketOverlay logBasketOverlay;
+	@Inject private LogBasketConfig logBasketConfig;
 
 	private final Multiset<Integer> inventoryItems = HashMultiset.create();
 	private final Multiset<Integer> equipmentItems = HashMultiset.create();
@@ -104,6 +110,7 @@ public class LogBasketPlugin extends Plugin
 	private final AtomicInteger burnedLogsFromInfernalAxe = new AtomicInteger();
 
 	private boolean pendingPartialEmpty = false;
+	private LogBasketInfobox infobox = null;
 
 	@Provides
 	public LogBasketConfig provideConfig(ConfigManager configManager)
@@ -404,6 +411,7 @@ public class LogBasketPlugin extends Plugin
 		Arrays.stream(container.getItems())
 			.map(Item::getId)
 			.forEach(target::add);
+		updateInfobox();
 	}
 
 	private boolean hasAnyOfItem(Collection<Integer> itemIds)
@@ -426,5 +434,28 @@ public class LogBasketPlugin extends Plugin
 			return true;
 		}
 		return false;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (LogBasketConfig.GROUP.equals(event.getGroup()))
+		{
+			updateInfobox();
+		}
+	}
+
+	private void updateInfobox()
+	{
+		if (!logBasketConfig.showInfobox() || !hasAnyOfItem(LogBasket.BASKET_IDS))
+		{
+			infoBoxManager.removeInfoBox(infobox);
+			infobox = null;
+		}
+		else if (infobox == null && logBasketConfig.showInfobox())
+		{
+			infobox = new LogBasketInfobox(this, logBasketConfig, itemManager.getImage(ItemID.LOG_BASKET_CLOSED));
+			infoBoxManager.addInfoBox(infobox);
+		}
 	}
 }
